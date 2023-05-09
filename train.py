@@ -32,6 +32,7 @@ def train(args, model, optimizer, scheduler, ema_weights, train_loader, val_load
     for epoch in range(args.n_epochs):
         if epoch % 5 == 0: print("Run name: ", args.run_name)
         logs = {}
+        # print(model, train_loader, optimizer, device, t_to_sigma, loss_fn, ema_weights)
         train_losses = train_epoch(model, train_loader, optimizer, device, t_to_sigma, loss_fn, ema_weights)
         print("Epoch {}: Training loss {:.4f}  tr {:.4f}   rot {:.4f}   tor {:.4f}"
               .format(epoch, train_losses['loss'], train_losses['tr_loss'], train_losses['rot_loss'],
