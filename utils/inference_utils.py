@@ -11,33 +11,33 @@ from datasets.process_mols import parse_pdb_from_path, generate_conformer, read_
     extract_receptor_structure, get_rec_graph
 
 
-three_to_one = {'ALA':	'A',
-'ARG':	'R',
-'ASN':	'N',
-'ASP':	'D',
-'CYS':	'C',
-'GLN':	'Q',
-'GLU':	'E',
-'GLY':	'G',
-'HIS':	'H',
-'ILE':	'I',
-'LEU':	'L',
-'LYS':	'K',
-'MET':	'M',
+three_to_one = {'ALA':  'A',
+'ARG':  'R',
+'ASN':  'N',
+'ASP':  'D',
+'CYS':  'C',
+'GLN':  'Q',
+'GLU':  'E',
+'GLY':  'G',
+'HIS':  'H',
+'ILE':  'I',
+'LEU':  'L',
+'LYS':  'K',
+'MET':  'M',
 'MSE':  'M', # MSE this is almost the same AA as MET. The sulfur is just replaced by Selen
-'PHE':	'F',
-'PRO':	'P',
-'PYL':	'O',
-'SER':	'S',
-'SEC':	'U',
-'THR':	'T',
-'TRP':	'W',
-'TYR':	'Y',
-'VAL':	'V',
-'ASX':	'B',
-'GLX':	'Z',
-'XAA':	'X',
-'XLE':	'J'}
+'PHE':  'F',
+'PRO':  'P',
+'PYL':  'O',
+'SER':  'S',
+'SEC':  'U',
+'THR':  'T',
+'TRP':  'W',
+'TYR':  'Y',
+'VAL':  'V',
+'ASX':  'B',
+'GLX':  'Z',
+'XAA':  'X',
+'XLE':  'J'}
 
 def get_sequences_from_pdbfile(file_path):
     biopython_parser = PDBParser()
@@ -181,14 +181,14 @@ class InferenceDataset(Dataset):
             for i in range(len(protein_sequences)):
                 s = protein_sequences[i].split(':')
                 sequences.extend(s)
-                labels.extend([complex_names[i] + '_chain_' + str(j) for j in range(len(s))])
+                labels.extend([str(complex_names[i]) + '_chain_' + str(j) for j in range(len(s))])
 
             lm_embeddings = compute_ESM_embeddings(model, alphabet, labels, sequences)
 
             self.lm_embeddings = []
             for i in range(len(protein_sequences)):
                 s = protein_sequences[i].split(':')
-                self.lm_embeddings.append([lm_embeddings[complex_names[i] + '_chain_' + str(j)] for j in range(len(s))])
+                self.lm_embeddings.append([lm_embeddings[str(complex_names[i]) + '_chain_' + str(j)] for j in range(len(s))])
 
         elif not lm_embeddings:
             self.lm_embeddings = [None] * len(self.complex_names)
